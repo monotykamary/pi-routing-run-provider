@@ -14,9 +14,9 @@
  *   - latency_ms and provider metadata on responses
  *
  * Data flow:
- *   models.json       → auto-generated from routing.run API (model discovery)
+ *   models.json       → scraped from routing.run/models (public catalog)
  *   patch.json        → manual overrides (reasoning, compat, pricing)
- *   custom-models.json → hidden/router models not in the API
+ *   custom-models.json → hidden/router models not in the catalog
  *
  * Merge order: models.json → apply patch.json → merge custom-models.json
  *

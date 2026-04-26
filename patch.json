@@ -1,3 +1,3 @@
 {
-  "_comment": "This file contains manual overrides applied on top of models.json data at runtime. Add entries for models where the API returns incorrect or incomplete data (e.g., wrong reasoning flag, missing compat settings, incorrect context window)."
+  "_comment": "Runtime overrides applied on top of models.json. Add entries here when the scraped data is wrong (e.g. incorrect reasoning flag, missing compat, wrong context window). These are applied at runtime by index.ts and NOT baked into models.json by the update script."
 }

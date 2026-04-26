@@ -22,9 +22,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch and update models
-        env:
-          ROUTING_RUN_API_KEY: ${{ secrets.ROUTING_RUN_API_KEY }}
+      - name: Scrape and update models
         run: node scripts/update-models.js
 
       - name: Check for changes
@@ -41,10 +39,10 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'feat: update routing.run models from API'
-          title: 'feat: update routing.run models from API'
+          commit-message: 'feat: update routing.run models from public catalog'
+          title: 'feat: update routing.run models from public catalog'
           body: |
-            Automated update of Routing.Run models from https://api.routing.run/v1/models
+            Automated update of Routing.Run models scraped from https://routing.run/models
 
             Changes include:
             - Updated models in `models.json`

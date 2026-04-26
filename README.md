@@ -6,23 +6,42 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 
 - **OpenAI-compatible API** — Uses routing.run's `/v1/chat/completions` endpoint
 - **Smart routing** — Auto-selects the optimal upstream provider for each request
-- **Multi-model** — DeepSeek V3.2, Kimi K2.5, GLM 5, Qwen 3.5, Gemma 4
-- **Reasoning/thinking** — Extended thinking support on compatible models
-- **Fallback routing** — Automatic failover if the primary provider is unavailable
+- **24 models** — DeepSeek, Kimi, GLM, Qwen, MiniMax, MiMo, Gemma across multiple providers
+- **Reasoning/thinking** — Extended thinking on 23 of 24 models
+- **Provider failover** — Automatic fallback when upstream providers have issues
+- **Pricing included** — Per-model input/output/cache pricing scraped from the catalog
 - **Streaming** — Real-time token streaming via SSE
 
 ## Available Models
 
-| Model | Context | Max Output | Reasoning | Thinking Format |
-|-------|---------|------------|-----------|-----------------|
-| DeepSeek V3.2 | 164K | 164K | ✅ | openai |
-| GLM 5 | 203K | 203K | ✅ | qwen-chat-template |
-| Kimi K2.5 | 131K | 33K | ✅ | zai |
-| Qwen 3.5 397B A17B | 262K | 262K | ✅ | qwen |
-| Gemma 4 31B IT | 262K | 262K | ❌ | — |
-| Qwen 3.5 9B | 262K | 262K | ❌ | — |
+| Model | Context | Max Output | Reasoning | Input $/M | Output $/M | Cache $/M |
+|-------|---------|------------|-----------|-----------|------------|-----------|
+| DeepSeek V4 Pro | 1M | 134K | ✅ | $1.150 | $3.000 | $0.230 |
+| DeepSeek V3.2 | 168K | 163K | ✅ | $0.493 | $0.739 | — |
+| DeepSeek V3.2 Speciale | 168K | 168K | ✅ | $0.550 | $0.820 | — |
+| DeepSeek R1 | 167K | 167K | ✅ | $0.495 | $2.365 | — |
+| GLM 5.1 | 205K | 205K | ✅ | $1.000 | $3.000 | — |
+| GLM 5.1 Precision | 205K | 205K | ✅ | $1.200 | $3.500 | — |
+| GLM 5 Highspeed | 205K | 205K | ✅ | $1.109 | $3.542 | — |
+| GLM 5 | 205K | 205K | ✅ | $0.792 | $2.530 | — |
+| GLM 4.7 Flash | 205K | 205K | ✅ | $1.320 | $4.400 | — |
+| GLM 4.7 | 205K | 205K | ✅ | $1.320 | $4.400 | — |
+| Kimi K2.5 | 134K | 32K | ✅ | $0.462 | $2.420 | — |
+| Kimi K2.6 Precision | 262K | 262K | ✅ | $0.462 | $2.420 | — |
+| Kimi K2.5 Highspeed | 134K | 134K | ✅ | $0.647 | $3.388 | — |
+| Qwen 3.6 Plus | 134K | 134K | ✅ | $0.600 | $1.800 | — |
+| Qwen 3.5 Plus | 134K | 134K | ✅ | $0.550 | $1.650 | — |
+| Qwen 3.5 397B A17B | 134K | 262K | ✅ | $1.100 | $3.300 | — |
+| MiniMax M2.7 | 102K | 102K | ✅ | $0.330 | $1.320 | — |
+| MiniMax M2.7 Highspeed | 102K | 102K | ✅ | $0.330 | $1.320 | — |
+| MiniMax M2.5 | 102K | 102K | ✅ | $0.193 | $1.238 | — |
+| MiniMax M2.5 Highspeed | 102K | 102K | ✅ | $0.193 | $1.238 | — |
+| MiMo-V2.5-Pro | 262K | 262K | ✅ | $0.450 | $1.350 | — |
+| MiMo-V2.5 | 262K | 262K | ✅ | $0.450 | $1.350 | — |
+| Gemma 4 31B IT | 134K | 262K | ✅ | $0.100 | $0.300 | — |
+| Qwen 3.5 9B | 134K | 262K | ❌ | $0.200 | $0.600 | — |
 
-*Pricing is determined by routing.run — check [routing.run](https://routing.run) for current rates.*
+*Pricing per million tokens. Scraped from https://routing.run/models — subject to change.*
 
 ## Installation
 
@@ -113,48 +132,61 @@ Or use `/models` to browse all available Routing.Run models.
 
 ### Thinking Mode
 
-Reasoning-capable models automatically use their respective thinking format:
+Reasoning-capable models use their respective thinking format automatically:
 
-- **`openai`** — DeepSeek V3.2 (`thinking: {type: "enabled"}`)
-- **`zai`** — Kimi K2.5
-- **`qwen`** — Qwen 3.5 397B A17B (`enable_thinking: true`)
-- **`qwen-chat-template`** — GLM 5 (`chat_template_kwargs.enable_thinking`)
+| Provider | Thinking Format | Mechanism |
+|----------|----------------|-----------|
+| DeepSeek | `openai` | `thinking: {type: "enabled/disabled"}` |
+| Kimi | `zai` | Kimi-native thinking API |
+| GLM | `qwen-chat-template` | `chat_template_kwargs.enable_thinking` |
+| Qwen | `qwen` | Top-level `enable_thinking: true` |
+| MiniMax | `qwen` | Qwen-compatible thinking |
+| MiMo | `qwen` | Qwen-compatible thinking |
+| Gemma | `openai` | OpenAI-compatible thinking |
 
 ## Data Flow
 
 ```
-models.json           ← auto-generated from routing.run API (model discovery)
-patch.json            ← manual overrides (reasoning, compat, pricing)
-custom-models.json    ← hidden/router models not in the API
+models.json           ← scraped from routing.run/models (public page, no API key)
+patch.json            ← manual overrides (reasoning corrections, compat, pricing)
+custom-models.json    ← hidden/router models not in the catalog
          ↓
    merge order: models.json → patch.json → custom-models.json
 ```
 
-- **`models.json`** — Pure API data. Updated automatically by the CI workflow.
-- **`patch.json`** — Corrections for API inconsistencies. Applied at runtime. Manually maintained.
-- **`custom-models.json`** — Additional models not exposed by the API (routers, experimental). Manually maintained.
+- **`models.json`** — Full catalog scraped from the public models page. Updated automatically by the CI workflow. No API key required.
+- **`patch.json`** — Corrections for scraped data inconsistencies. Applied at runtime. Manually maintained.
+- **`custom-models.json`** — Additional models not listed on the public page (routers, experimental). Manually maintained.
 
 ## Updating Models
 
-Run the update script to fetch the latest models from routing.run's API:
+Run the update script to scrape the latest models from routing.run's public catalog:
 
 ```bash
-export ROUTING_RUN_API_KEY=your-api-key
 node scripts/update-models.js
 ```
 
-This will:
-1. Fetch models from `https://api.routing.run/v1/models`
-2. Preserve known metadata from existing `models.json`
-3. Update `models.json` and the README model table
+No API key is required — the script scrapes the public models page. This will:
+1. Fetch `https://routing.run/models`
+2. Extract all model cards (name, ID, context, tiers, pricing)
+3. Detect reasoning capabilities per model family
+4. Update `models.json` and the README model table
 
 A GitHub Actions workflow runs this daily and creates a PR if models have changed.
+
+### CI Setup
+
+To enable automated updates, add a repository secret:
+
+1. No secrets required for model scraping (public page)
+2. GitHub Actions uses `GITHUB_TOKEN` (auto-provisioned) for creating PRs
 
 ## API Documentation
 
 - Routing.Run Docs: https://docs.routing.run
-- API Reference: https://docs.routing.run/llms.txt
+- Models Catalog: https://routing.run/models
 - OpenAI-compatible endpoint: `https://api.routing.run/v1`
+- API Reference: https://docs.routing.run/llms.txt
 
 ## License
 
