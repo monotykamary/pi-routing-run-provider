@@ -1,0 +1,34 @@
+{
+  "name": "pi-routing-run-provider",
+  "version": "1.0.0",
+  "description": "Routing.Run provider extension for pi - Access DeepSeek, Kimi, GLM, Qwen, and Gemma models through routing.run's smart routing API",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "clean": "echo 'nothing to clean'",
+    "build": "echo 'nothing to build'",
+    "check": "echo 'nothing to check'",
+    "update-models": "node scripts/update-models.js"
+  },
+  "keywords": [
+    "pi",
+    "extension",
+    "provider",
+    "routing-run",
+    "ai",
+    "llm",
+    "deepseek",
+    "kimi",
+    "glm",
+    "qwen",
+    "gemma",
+    "router"
+  ],
+  "author": "",
+  "license": "MIT",
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

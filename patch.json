@@ -1,0 +1,3 @@
+{
+  "_comment": "This file contains manual overrides applied on top of models.json data at runtime. Add entries for models where the API returns incorrect or incomplete data (e.g., wrong reasoning flag, missing compat settings, incorrect context window)."
+}
