@@ -16,29 +16,29 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 
 | Model | Context | Max Output | Reasoning | Input $/M | Output $/M | Cache $/M |
 |-------|---------|------------|-----------|-----------|------------|-----------|
-| DeepSeek V4 Pro | 1M | 134K | ✅ | $1.150 | $3.000 | $0.230 |
-| DeepSeek V3.2 | 168K | 163K | ✅ | $0.493 | $0.739 | — |
-| DeepSeek V3.2 Speciale | 168K | 168K | ✅ | $0.550 | $0.820 | — |
 | DeepSeek R1 | 167K | 167K | ✅ | $0.495 | $2.365 | — |
+| DeepSeek V3.2 | 168K | 164K | ✅ | $0.493 | $0.739 | — |
+| DeepSeek V3.2 Speciale | 168K | 168K | ✅ | $0.550 | $0.820 | — |
+| DeepSeek V4 Pro | 1.0M | 134K | ✅ | $1.150 | $3.000 | $0.230 |
+| Gemma 4 31B IT | 134K | 262K | ✅ | $0.100 | $0.300 | — |
+| GLM 4.7 | 205K | 205K | ✅ | $1.320 | $4.400 | — |
+| GLM 4.7 Flash | 205K | 205K | ✅ | $1.320 | $4.400 | — |
+| GLM 5 | 205K | 203K | ✅ | $0.792 | $2.530 | — |
+| GLM 5 Highspeed | 205K | 205K | ✅ | $1.109 | $3.542 | — |
 | GLM 5.1 | 205K | 205K | ✅ | $1.000 | $3.000 | — |
 | GLM 5.1 Precision | 205K | 205K | ✅ | $1.200 | $3.500 | — |
-| GLM 5 Highspeed | 205K | 205K | ✅ | $1.109 | $3.542 | — |
-| GLM 5 | 205K | 205K | ✅ | $0.792 | $2.530 | — |
-| GLM 4.7 Flash | 205K | 205K | ✅ | $1.320 | $4.400 | — |
-| GLM 4.7 | 205K | 205K | ✅ | $1.320 | $4.400 | — |
-| Kimi K2.5 | 134K | 32K | ✅ | $0.462 | $2.420 | — |
-| Kimi K2.6 Precision | 262K | 262K | ✅ | $0.462 | $2.420 | — |
+| Kimi K2.5 | 134K | 33K | ✅ | $0.462 | $2.420 | — |
 | Kimi K2.5 Highspeed | 134K | 134K | ✅ | $0.647 | $3.388 | — |
-| Qwen 3.6 Plus | 134K | 134K | ✅ | $0.600 | $1.800 | — |
-| Qwen 3.5 Plus | 134K | 134K | ✅ | $0.550 | $1.650 | — |
-| Qwen 3.5 397B A17B | 134K | 262K | ✅ | $1.100 | $3.300 | — |
-| MiniMax M2.7 | 102K | 102K | ✅ | $0.330 | $1.320 | — |
-| MiniMax M2.7 Highspeed | 102K | 102K | ✅ | $0.330 | $1.320 | — |
+| Kimi K2.6 Precision | 262K | 262K | ✅ | $0.462 | $2.420 | — |
+| MiMo-V2.5 | 262K | 262K | ✅ | $0.450 | $1.350 | — |
+| MiMo-V2.5-Pro | 262K | 262K | ✅ | $0.450 | $1.350 | — |
 | MiniMax M2.5 | 102K | 102K | ✅ | $0.193 | $1.238 | — |
 | MiniMax M2.5 Highspeed | 102K | 102K | ✅ | $0.193 | $1.238 | — |
-| MiMo-V2.5-Pro | 262K | 262K | ✅ | $0.450 | $1.350 | — |
-| MiMo-V2.5 | 262K | 262K | ✅ | $0.450 | $1.350 | — |
-| Gemma 4 31B IT | 134K | 262K | ✅ | $0.100 | $0.300 | — |
+| MiniMax M2.7 | 102K | 102K | ✅ | $0.330 | $1.320 | — |
+| MiniMax M2.7 Highspeed | 102K | 102K | ✅ | $0.330 | $1.320 | — |
+| Qwen 3.5 397B A17B | 134K | 262K | ✅ | $1.100 | $3.300 | — |
+| Qwen3.5 Plus | 134K | 134K | ✅ | $0.550 | $1.650 | — |
+| Qwen3.6 Plus | 134K | 134K | ✅ | $0.600 | $1.800 | — |
 | Qwen 3.5 9B | 134K | 262K | ❌ | $0.200 | $0.600 | — |
 
 *Pricing per million tokens. Scraped from https://routing.run/models — subject to change.*
