@@ -240,7 +240,11 @@ export default function (pi: ExtensionAPI) {
     await resolveApiKey(ctx.modelRegistry);
     revalidateModels(cachedApiKey, embeddedModels).then((freshBase) => {
       if (freshBase) {
-        pi.registerProvider("routing-run", { models: buildModels(freshBase) });
+        pi.registerProvider("routing-run", {
+          baseUrl: BASE_URL,
+          apiKey: "ROUTING_RUN_API_KEY",
+          models: buildModels(freshBase),
+        });
       }
     });
   });
