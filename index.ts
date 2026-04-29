@@ -243,6 +243,7 @@ export default function (pi: ExtensionAPI) {
         pi.registerProvider("routing-run", {
           baseUrl: BASE_URL,
           apiKey: "ROUTING_RUN_API_KEY",
+          api: "openai-completions",
           models: buildModels(freshBase),
         });
       }
