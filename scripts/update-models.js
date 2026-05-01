@@ -25,58 +25,6 @@ const MODELS_PAGE_URL = 'https://routing.run/models';
 const MODELS_JSON_PATH = path.join(__dirname, '..', 'models.json');
 const README_PATH = path.join(__dirname, '..', 'README.md');
 
-// ─── Reasoning / thinking-format detection by model family ──────────────────
-//
-// Determined from known provider SDKs and routing.run documentation.
-// "false" means we currently believe the model does NOT support extended
-// thinking. Override via patch.json at runtime if proven otherwise.
-
-const REASONING_CONFIG = {
-  // DeepSeek — openai thinking format (thinking: {type: "enabled/disabled"})
-  deepseek: { reasoning: true, thinkingFormat: 'openai' },
-  // Kimi (Moonshot) — zai thinking format
-  kimi: { reasoning: true, thinkingFormat: 'zai' },
-  // GLM (Zhipu AI) — qwen-chat-template (chat_template_kwargs.enable_thinking)
-  glm: { reasoning: true, thinkingFormat: 'qwen-chat-template' },
-  // Qwen large MoE models — qwen top-level enable_thinking
-  qwen: { reasoning: false }, // set per model below
-  // MiniMax — typically qwen-compatible thinking
-  minimax: { reasoning: true, thinkingFormat: 'qwen' },
-  // MiMo (Xiaomi) — typically supports reasoning
-  mimo: { reasoning: true, thinkingFormat: 'qwen' },
-  // Google Gemma — openai thinking format
-  gemma: { reasoning: true, thinkingFormat: 'openai' },
-};
-
-// Per-model reasoning overrides (modelId → { reasoning?, thinkingFormat? })
-const REASONING_OVERRIDES = {
-  'route/qwen3.5-9b': { reasoning: false },
-  'route/qwen3.5-397b-a17b': { reasoning: true, thinkingFormat: 'qwen' },
-  'route/qwen3.5-plus': { reasoning: true, thinkingFormat: 'qwen' },
-  'route/qwen3.6-plus': { reasoning: true, thinkingFormat: 'qwen' },
-  'route/deepseek-r1': { reasoning: true, thinkingFormat: 'openai' },
-};
-
-/**
- * Detect reasoning and thinking format for a model.
- */
-function detectReasoning(modelId) {
-  // Check explicit overrides first
-  if (REASONING_OVERRIDES[modelId]) {
-    return REASONING_OVERRIDES[modelId];
-  }
-
-  // Match by family prefix
-  const slug = modelId.replace('route/', '');
-  for (const [family, config] of Object.entries(REASONING_CONFIG)) {
-    if (slug.startsWith(family)) {
-      return config;
-    }
-  }
-
-  return { reasoning: false };
-}
-
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function loadJson(filePath) {
@@ -178,7 +126,7 @@ function parseContext(str) {
 function transformScrapedModel(card, existingModelsMap) {
   const id = card.modelId;
 
-  // Preserve existing data if available (for compat override stability)
+  // Preserve existing curated data (reasoning, thinkingFormat, compat, etc.)
   if (existingModelsMap[id]) {
     const existing = { ...existingModelsMap[id] };
 
@@ -210,16 +158,15 @@ function transformScrapedModel(card, existingModelsMap) {
     return existing;
   }
 
-  // New model — build from scraped data
+  // New model — build from scraped data + sensible defaults
+  // Curate models.json manually after discovery for reasoning, thinkingFormat, etc.
   const contextWindow = parseContext(card.context) || 131072;
   const maxTokens = parseContext(card.outputContext) || contextWindow;
-
-  const { reasoning, thinkingFormat } = detectReasoning(id);
 
   const model = {
     id,
     name: card.name || id,
-    reasoning,
+    reasoning: false,
     input: ['text'],
     cost: {
       input: parseFloat(card.inputPrice) || 0,
@@ -235,15 +182,6 @@ function transformScrapedModel(card, existingModelsMap) {
       supportsStore: false,
     },
   };
-
-  if (reasoning && thinkingFormat) {
-    model.compat.thinkingFormat = thinkingFormat;
-  }
-
-  // Remove thinkingFormat from non-reasoning
-  if (!model.reasoning && model.compat?.thinkingFormat) {
-    delete model.compat.thinkingFormat;
-  }
 
   return model;
 }
