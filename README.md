@@ -39,6 +39,13 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 | Qwen 3.5 397B A17B | 134K | 262K | ✅ | $1.100 | $3.300 | — |
 | Qwen3.5 Plus | 134K | 134K | ✅ | $0.550 | $1.650 | — |
 | Qwen3.6 Plus | 134K | 134K | ✅ | $0.600 | $1.800 | — |
+| DeepSeek V4 Flash | 1.0M | 134K | ❌ | $0.120 | $0.210 | $0.020 |
+| DeepSeek V4 Pro Precision | 1.0M | 134K | ❌ | $1.250 | $3.000 | $0.250 |
+| Kimi K2.6 | 262K | 262K | ❌ | $0.462 | $2.420 | — |
+| MiMo-V2.5 | 262K | 262K | ❌ | $0.450 | $1.350 | — |
+| MiMo-V2.5-Pro | 262K | 262K | ❌ | $0.450 | $1.350 | — |
+| Poolside Laguna M.1 Preview | 131K | 131K | ❌ | — | — | — |
+| Poolside Laguna XS.2 Preview | 131K | 131K | ❌ | — | — | — |
 | Qwen 3.5 9B | 134K | 262K | ❌ | $0.200 | $0.600 | — |
 
 *Pricing per million tokens. Scraped from https://routing.run/models — subject to change.*
