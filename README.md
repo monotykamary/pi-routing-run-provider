@@ -41,12 +41,24 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 | Qwen3.6 Plus | 134K | 134K | ✅ | $0.600 | $1.800 | — |
 | DeepSeek V4 Flash | 1.0M | 134K | ❌ | $0.120 | $0.210 | $0.020 |
 | DeepSeek V4 Pro Precision | 1.0M | 134K | ❌ | $1.250 | $3.000 | $0.250 |
+| ElevenLabs Flash V2 | 131K | 131K | ❌ | — | — | — |
+| ElevenLabs Flash V2.5 | 131K | 131K | ❌ | — | — | — |
+| ElevenLabs Multilingual V2 | 131K | 131K | ❌ | — | — | — |
+| ElevenLabs V3 | 131K | 131K | ❌ | — | — | — |
+| FLUX.1 Schnell | 131K | 131K | ❌ | — | — | — |
+| Hunyuan Image 3 | 131K | 131K | ❌ | — | — | — |
 | Kimi K2.6 | 262K | 262K | ❌ | $0.462 | $2.420 | — |
 | MiMo-V2.5 | 262K | 262K | ❌ | $0.450 | $1.350 | — |
 | MiMo-V2.5-Pro | 262K | 262K | ❌ | $0.450 | $1.350 | — |
 | Poolside Laguna M.1 Preview | 131K | 131K | ❌ | — | — | — |
 | Poolside Laguna XS.2 Preview | 131K | 131K | ❌ | — | — | — |
 | Qwen 3.5 9B | 134K | 262K | ❌ | $0.200 | $0.600 | — |
+| Qwen Image 2512 | 131K | 131K | ❌ | — | — | — |
+| Scribe V1 | 131K | 131K | ❌ | — | — | — |
+| Scribe V2 | 131K | 131K | ❌ | — | — | — |
+| Scribe V2 Realtime | 131K | 131K | ❌ | — | — | — |
+| Stable Diffusion XL Base 1.0 | 131K | 131K | ❌ | — | — | — |
+| Whisper Large V3 | 131K | 131K | ❌ | — | — | — |
 
 *Pricing per million tokens. Scraped from https://routing.run/models — subject to change.*
 
