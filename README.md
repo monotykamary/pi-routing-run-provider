@@ -54,6 +54,8 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 | Poolside Laguna XS.2 Preview | 131K | 131K | ❌ | — | — | — |
 | Qwen 3.5 9B | 134K | 262K | ❌ | $0.200 | $0.600 | — |
 | Qwen Image 2512 | 131K | 131K | ❌ | — | — | — |
+| Qwen3.5 9B Chat | 134K | 134K | ❌ | $0.200 | $0.600 | — |
+| Qwen3.6 27B | 134K | 134K | ❌ | $0.200 | $0.600 | — |
 | Scribe V1 | 131K | 131K | ❌ | — | — | — |
 | Scribe V2 | 131K | 131K | ❌ | — | — | — |
 | Scribe V2 Realtime | 131K | 131K | ❌ | — | — | — |

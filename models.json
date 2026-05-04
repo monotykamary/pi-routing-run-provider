@@ -821,6 +821,48 @@
     }
   },
   {
+    "id": "route/qwen3.5-9b-chat",
+    "name": "Qwen3.5 9B Chat",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.2,
+      "output": 0.6,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 134144,
+    "maxTokens": 134144,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
+    "id": "route/qwen3.6-27b",
+    "name": "Qwen3.6 27B",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.2,
+      "output": 0.6,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 134144,
+    "maxTokens": 134144,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
     "id": "route/scribe-v1",
     "name": "Scribe V1",
     "reasoning": false,
