@@ -31,7 +31,7 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 | Kimi K2.5 Highspeed | 134K | 134K | ✅ | $0.647 | $3.388 | — |
 | Kimi K2.6 Precision | 262K | 262K | ✅ | $0.462 | $2.420 | — |
 | MiMo-V2.5 | 262K | 262K | ✅ | $0.450 | $1.350 | — |
-| MiMo-V2.5-Pro | 262K | 262K | ✅ | $0.450 | $1.350 | — |
+| MiMo-V2.5-Pro | 1.0M | 262K | ✅ | $0.450 | $1.350 | — |
 | MiniMax M2.5 | 102K | 102K | ✅ | $0.193 | $1.238 | — |
 | MiniMax M2.5 Highspeed | 102K | 102K | ✅ | $0.193 | $1.238 | — |
 | MiniMax M2.7 | 102K | 102K | ✅ | $0.330 | $1.320 | — |
