@@ -527,6 +527,27 @@
     }
   },
   {
+    "id": "route/deepseek-v4-flash-full",
+    "name": "DeepSeek V4 Flash Full",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.12,
+      "output": 0.21,
+      "cacheRead": 0.02,
+      "cacheWrite": 0
+    },
+    "contextWindow": 1000000,
+    "maxTokens": 134144,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
     "id": "route/deepseek-v4-pro-precision",
     "name": "DeepSeek V4 Pro Precision",
     "reasoning": false,
@@ -548,125 +569,20 @@
     }
   },
   {
-    "id": "route/eleven-flash-v2",
-    "name": "ElevenLabs Flash V2",
+    "id": "route/glm-5.1-full",
+    "name": "glm-5.1-full",
     "reasoning": false,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 0,
-      "output": 0,
+      "input": 1,
+      "output": 3,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/eleven-flash-v2.5",
-    "name": "ElevenLabs Flash V2.5",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/eleven-multilingual-v2",
-    "name": "ElevenLabs Multilingual V2",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/eleven-v3",
-    "name": "ElevenLabs V3",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/flux-1-schnell",
-    "name": "FLUX.1 Schnell",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/hunyuan-image-3",
-    "name": "Hunyuan Image 3",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
+    "contextWindow": 204800,
+    "maxTokens": 204800,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -688,6 +604,27 @@
     },
     "contextWindow": 262144,
     "maxTokens": 262144,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
+    "id": "route/kimi-k2.6-full",
+    "name": "Kimi K2.6 Full",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.462,
+      "output": 2.42,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 204800,
+    "maxTokens": 204800,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -730,6 +667,69 @@
     },
     "contextWindow": 262144,
     "maxTokens": 262144,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
+    "id": "route/mistral-large-3",
+    "name": "Mistral Large 3",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 131072,
+    "maxTokens": 131072,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
+    "id": "route/mistral-medium-2505",
+    "name": "Mistral Medium 2505",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 131072,
+    "maxTokens": 131072,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
+    "id": "route/mistral-small-2503",
+    "name": "Mistral Small 2503",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 131072,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -800,27 +800,6 @@
     }
   },
   {
-    "id": "route/qwen-image-2512",
-    "name": "Qwen Image 2512",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
     "id": "route/qwen3.5-9b-chat",
     "name": "Qwen3.5 9B Chat",
     "reasoning": false,
@@ -863,8 +842,8 @@
     }
   },
   {
-    "id": "route/scribe-v1",
-    "name": "Scribe V1",
+    "id": "route/step-3.5-flash",
+    "name": "Step 3.5 Flash",
     "reasoning": false,
     "input": [
       "text"
@@ -884,71 +863,8 @@
     }
   },
   {
-    "id": "route/scribe-v2",
-    "name": "Scribe V2",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/scribe-v2-realtime",
-    "name": "Scribe V2 Realtime",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/stable-diffusion-xl-base-1.0",
-    "name": "Stable Diffusion XL Base 1.0",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/whisper-large-v3",
-    "name": "Whisper Large V3",
+    "id": "route/step-3.5-flash-2603",
+    "name": "Step 3.5 Flash 2603",
     "reasoning": false,
     "input": [
       "text"

@@ -6,8 +6,8 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 
 - **OpenAI-compatible API** — Uses routing.run's `/v1/chat/completions` endpoint
 - **Smart routing** — Auto-selects the optimal upstream provider for each request
-- **24 models** — DeepSeek, Kimi, GLM, Qwen, MiniMax, MiMo, Gemma across multiple providers
-- **Reasoning/thinking** — Extended thinking on 23 of 24 models
+- **41 models** — DeepSeek, Kimi, GLM, Qwen, MiniMax, MiMo, Gemma across multiple providers
+- **Reasoning/thinking** — Extended thinking on 23 of 41 models
 - **Provider failover** — Automatic fallback when upstream providers have issues
 - **Pricing included** — Per-model input/output/cache pricing scraped from the catalog
 - **Streaming** — Real-time token streaming via SSE
@@ -40,27 +40,23 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 | Qwen3.5 Plus | 134K | 134K | ✅ | $0.550 | $1.650 | — |
 | Qwen3.6 Plus | 134K | 134K | ✅ | $0.600 | $1.800 | — |
 | DeepSeek V4 Flash | 1.0M | 134K | ❌ | $0.120 | $0.210 | $0.020 |
+| DeepSeek V4 Flash Full | 1.0M | 134K | ❌ | $0.120 | $0.210 | $0.020 |
 | DeepSeek V4 Pro Precision | 1.0M | 134K | ❌ | $1.250 | $3.000 | $0.250 |
-| ElevenLabs Flash V2 | 131K | 131K | ❌ | — | — | — |
-| ElevenLabs Flash V2.5 | 131K | 131K | ❌ | — | — | — |
-| ElevenLabs Multilingual V2 | 131K | 131K | ❌ | — | — | — |
-| ElevenLabs V3 | 131K | 131K | ❌ | — | — | — |
-| FLUX.1 Schnell | 131K | 131K | ❌ | — | — | — |
-| Hunyuan Image 3 | 131K | 131K | ❌ | — | — | — |
+| glm-5.1-full | 205K | 205K | ❌ | $1.000 | $3.000 | — |
 | Kimi K2.6 | 262K | 262K | ❌ | $0.462 | $2.420 | — |
+| Kimi K2.6 Full | 205K | 205K | ❌ | $0.462 | $2.420 | — |
 | MiMo-V2.5 | 262K | 262K | ❌ | $0.450 | $1.350 | — |
 | MiMo-V2.5-Pro | 262K | 262K | ❌ | $0.450 | $1.350 | — |
+| Mistral Large 3 | 131K | 131K | ❌ | — | — | — |
+| Mistral Medium 2505 | 131K | 131K | ❌ | — | — | — |
+| Mistral Small 2503 | 131K | 131K | ❌ | — | — | — |
 | Poolside Laguna M.1 Preview | 131K | 131K | ❌ | — | — | — |
 | Poolside Laguna XS.2 Preview | 131K | 131K | ❌ | — | — | — |
 | Qwen 3.5 9B | 134K | 262K | ❌ | $0.200 | $0.600 | — |
-| Qwen Image 2512 | 131K | 131K | ❌ | — | — | — |
 | Qwen3.5 9B Chat | 134K | 134K | ❌ | $0.200 | $0.600 | — |
 | Qwen3.6 27B | 134K | 134K | ❌ | $0.200 | $0.600 | — |
-| Scribe V1 | 131K | 131K | ❌ | — | — | — |
-| Scribe V2 | 131K | 131K | ❌ | — | — | — |
-| Scribe V2 Realtime | 131K | 131K | ❌ | — | — | — |
-| Stable Diffusion XL Base 1.0 | 131K | 131K | ❌ | — | — | — |
-| Whisper Large V3 | 131K | 131K | ❌ | — | — | — |
+| Step 3.5 Flash | 131K | 131K | ❌ | — | — | — |
+| Step 3.5 Flash 2603 | 131K | 131K | ❌ | — | — | — |
 
 *Pricing per million tokens. Scraped from https://routing.run/models — subject to change.*
 
