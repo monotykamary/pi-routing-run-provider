@@ -2,7 +2,6 @@ name: Update Routing.Run Models
 
 on:
   schedule:
-    # Run daily at 00:00 UTC
     - cron: '0 0 * * *'
   workflow_dispatch:
 
@@ -13,6 +12,7 @@ permissions:
 jobs:
   update-models:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,6 +25,33 @@ jobs:
       - name: Scrape and update models
         run: node scripts/update-models.js
 
+      - name: Validate output
+        run: |
+          # Verify models.json is valid JSON with expected models
+          MODEL_COUNT=$(node -e "
+            import fs from 'fs';
+            const data = JSON.parse(fs.readFileSync('models.json', 'utf8'));
+            if (!Array.isArray(data)) { process.exit(1); }
+            if (data.length < 10) {
+              console.error('Only ' + data.length + ' models — expected at least 10');
+              process.exit(1);
+            }
+            // Verify all model IDs have the route/ prefix
+            const bad = data.filter(m => !m.id.startsWith('route/'));
+            if (bad.length > 0) {
+              console.error('Invalid model IDs:', bad.map(m => m.id));
+              process.exit(1);
+            }
+            console.log(data.length);
+          ")
+          echo "models.json validated: $MODEL_COUNT models"
+
+          # Verify README.md still has the model table
+          if ! grep -q '## Available Models' README.md; then
+            echo "ERROR: README.md is missing the Available Models section"
+            exit 1
+          fi
+
       - name: Check for changes
         id: check-changes
         run: |
@@ -33,6 +60,18 @@ jobs:
           else
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Generate change summary
+        if: steps.check-changes.outputs.changed == 'true'
+        id: summary
+        run: |
+          {
+            echo 'summary<<EOF'
+            git diff models.json | grep -E '^[+-][^+-].*"id":' | \
+              sed -E 's/^[+].*"id": "(route/[^"]+)".*/added: \1/; s/^[+-].*"id": "(route/[^"]+)".*/removed: \1/' | \
+              sort | uniq -u | head -30
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
         if: steps.check-changes.outputs.changed == 'true'
@@ -43,6 +82,8 @@ jobs:
           title: 'feat: update routing.run models from public catalog'
           body: |
             Automated update of Routing.Run models scraped from https://routing.run/models
+
+            ${{ steps.summary.outputs.summary }}
 
             Changes include:
             - Updated models in `models.json`
