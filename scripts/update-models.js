@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 /**
- * Update Routing.Run models by scraping the public models page.
+ * Update Routing.Run models from API
  *
- * Scrapes https://routing.run/models (public, no API key required) and updates:
- * - models.json: Provider model definitions (with pricing, reasoning, compat)
- * - README.md: Model table in the Available Models section
+ * Fetches models from https://api.routing.run/v1/models and pricing from
+ * https://api.routing.run/v1/pricing, then updates:
+ * - models.json: Pure API model definitions (no patches baked in)
+ * - README.md: Model table with patch.json overrides applied
  *
- * The page renders model data inside a <astro-island> component. Currently it
- * uses a "ModelsMasonry" component whose props contain the full model catalog
- * as an array. This gives us the complete catalog regardless of plan tier.
+ * The /v1/models endpoint is public (no API key required).
+ * The /v1/pricing endpoint requires authentication (ROUTING_RUN_API_KEY).
+ * If no API key is available, pricing is preserved from existing models.json.
  *
- * Previous versions used individual "ProfileCard" components — if the page
- * structure changes again, the script tries both patterns and warns clearly.
+ * The API does NOT report reasoning capability or compat settings — patch.json
+ * corrects these at runtime (index.ts) and is also applied when generating the
+ * README table so the docs reflect reality.
  *
  * patch.json and custom-models.json are applied at runtime by the provider.
  * They are NOT baked into models.json, but ARE used to generate the README table.
- *
- * No API key required. No authentication needed.
  */
 
 import fs from 'fs';
@@ -25,15 +25,20 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const MODELS_PAGE_URL = 'https://routing.run/models';
+const MODELS_API_URLS = [
+  'https://api.routing.sh/v1/models',
+  'https://api.routing.run/v1/models',
+];
+const PRICING_API_URLS = [
+  'https://api.routing.sh/v1/pricing',
+  'https://api.routing.run/v1/pricing',
+];
 const MODELS_JSON_PATH = path.join(__dirname, '..', 'models.json');
 const PATCH_JSON_PATH = path.join(__dirname, '..', 'patch.json');
 const CUSTOM_MODELS_JSON_PATH = path.join(__dirname, '..', 'custom-models.json');
 const README_PATH = path.join(__dirname, '..', 'README.md');
 
 const FETCH_TIMEOUT_MS = 30_000;
-const MAX_RETRIES = 3;
-const RETRY_BASE_DELAY_MS = 1000;
 const MIN_MODELS_EXPECTED = 10;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -51,337 +56,126 @@ function saveJson(filePath, data) {
   console.log(`✓ Saved ${path.basename(filePath)}`);
 }
 
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function round2(n) {
+  return Math.round(n * 100) / 100;
 }
 
-/**
- * Fetch with timeout, retries, and exponential backoff.
- * Follows redirects automatically (node fetch does this by default).
- */
-async function fetchWithRetry(url, retries = MAX_RETRIES) {
+// ─── API Fetch ───────────────────────────────────────────────────────────────
+
+async function fetchModels() {
   let lastError;
-  for (let attempt = 1; attempt <= retries; attempt++) {
+  for (const url of MODELS_API_URLS) {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
+      console.log(`Fetching models from ${url}...`);
       const response = await fetch(url, {
-        signal: controller.signal,
-        redirect: 'follow',
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       });
-      clearTimeout(timeoutId);
-
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      return response;
+      const data = await response.json();
+      const models = data.data || data;
+      if (!Array.isArray(models)) {
+        throw new Error('API response does not contain an array of models');
+      }
+      console.log(`✓ Fetched ${models.length} models from ${url}`);
+      return models;
     } catch (error) {
       lastError = error;
-      const isAbort = error.name === 'AbortError';
-      if (attempt < retries) {
-        const delay = RETRY_BASE_DELAY_MS * Math.pow(2, attempt - 1);
-        const reason = isAbort ? 'timeout' : error.message;
-        console.warn(
-          `⚠ Attempt ${attempt}/${retries} failed (${reason}). Retrying in ${delay}ms...`
-        );
-        await sleep(delay);
-      }
+      console.warn(`⚠ Failed to fetch models from ${url}: ${error.message}`);
     }
   }
-  throw new Error(
-    `Failed to fetch ${url} after ${retries} attempts: ${lastError.message}`
-  );
+  throw new Error(`Failed to fetch models from all endpoints: ${lastError.message}`);
 }
 
-// ─── Scrape models page ──────────────────────────────────────────────────────
-
-/**
- * Parse Astro island props format: {"key":[0,"value"],"key2":[1,[...]],...}
- * The first array element is a type tag (0=string, 1=array), second is the value.
- */
-function parseAstroProps(propsJson) {
-  const raw = JSON.parse(propsJson);
-  const model = {};
-  for (const [key, val] of Object.entries(raw)) {
-    if (Array.isArray(val) && val.length >= 2) {
-      model[key] = val[1];
-    } else {
-      model[key] = val;
-    }
-  }
-  return model;
-}
-
-/**
- * Extract models from the ModelsMasonry component's props.
- * The props look like: {"models":[1,[[0,{...}],[0,{...}],...]]}
- * Each model object uses the same astro props format internally.
- */
-function extractModelsFromMasonry(propsStr) {
-  const decoded = propsStr
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-
-  const parsed = JSON.parse(decoded);
-  const modelsRaw = parsed.models;
-  if (!Array.isArray(modelsRaw) || modelsRaw.length < 2) {
-    throw new Error('ModelsMasonry props has unexpected "models" format');
-  }
-
-  // modelsRaw is [1, [[0, {modelProps}], [0, {modelProps}], ...]]
-  const modelsArray = modelsRaw[1];
-  if (!Array.isArray(modelsArray)) {
-    throw new Error('Models array is not an array');
-  }
-
-  const models = [];
-  for (const entry of modelsArray) {
-    if (!Array.isArray(entry) || entry.length < 2) {
-      console.warn('⚠ Skipping malformed model entry');
-      continue;
-    }
-    // entry is [0, {key: [type, value], ...}]
-    const modelProps = entry[1];
-    if (typeof modelProps !== 'object' || modelProps === null) {
-      console.warn('⚠ Skipping model with non-object props');
-      continue;
-    }
-    // Decode the nested astro props format for each model
-    const model = {};
-    for (const [key, val] of Object.entries(modelProps)) {
-      if (Array.isArray(val) && val.length >= 2) {
-        model[key] = val[1];
-      } else {
-        model[key] = val;
-      }
-    }
-    models.push(model);
-  }
-
-  return models;
-}
-
-/**
- * Extract models from individual ProfileCard astro-islands (legacy format).
- * Each island looks like: <astro-island ... component-url="...ProfileCard..." props="..." ...>
- */
-function extractModelsFromProfileCards(html) {
-  const propsPattern = /<astro-island[^>]*component-url="[^"]*ProfileCard[^"]*"[^>]*props="([^"]*)"[^>]*>/g;
-  const models = [];
-  let match;
-
-  while ((match = propsPattern.exec(html)) !== null) {
-    try {
-      const propsStr = match[1]
-        .replace(/&quot;/g, '"')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>');
-      models.push(parseAstroProps(propsStr));
-    } catch (e) {
-      console.warn(`⚠ Failed to parse ProfileCard props: ${e.message}`);
-    }
-  }
-
-  return models;
-}
-
-/**
- * Fetch the models page and extract model data.
- * Tries the current ModelsMasonry format first, then falls back to
- * the legacy ProfileCard format.
- */
-async function scrapeModels() {
-  console.log(`Fetching models page: ${MODELS_PAGE_URL}...`);
-  const response = await fetchWithRetry(MODELS_PAGE_URL);
-
-  const html = await response.text();
-  console.log(`✓ Fetched page (${(html.length / 1024).toFixed(0)} KB)`);
-
-  // Strategy 1: Find ModelsMasonry component with models array
-  const masonryPattern = /<astro-island[^>]*component-export="ModelsMasonry"[^>]*props="([^"]*)"[^>]*>/;
-  const masonryMatch = masonryPattern.exec(html);
-
-  if (masonryMatch) {
-    try {
-      const models = extractModelsFromMasonry(masonryMatch[1]);
-      if (models.length > 0) {
-        console.log(`✓ Extracted ${models.length} models from ModelsMasonry component`);
-        return models;
-      }
-    } catch (e) {
-      console.warn(`⚠ ModelsMasonry parsing failed: ${e.message}`);
-    }
-  }
-
-  // Strategy 2: Find individual ProfileCard islands (legacy format)
-  const profileModels = extractModelsFromProfileCards(html);
-  if (profileModels.length > 0) {
-    console.log(`✓ Extracted ${profileModels.length} models from ProfileCard components (legacy format)`);
-    return profileModels;
-  }
-
-  // Strategy 3: Try a broader match for any astro-island with a "models" prop key
-  const broadPattern = /<astro-island[^>]*props="\{&quot;models&quot;:[^"]*"[^>]*>/;
-  const broadMatch = broadPattern.exec(html);
-  if (broadMatch) {
-    console.warn('⚠ Found astro-island with models data but unrecognized component name. Attempting extraction...');
-    try {
-      const propsStr = broadMatch[0].match(/props="([^"]*)"/)?.[1];
-      if (propsStr) {
-        const models = extractModelsFromMasonry(propsStr);
-        if (models.length > 0) {
-          console.log(`✓ Extracted ${models.length} models from fallback astro-island`);
-          return models;
-        }
-      }
-    } catch (e) {
-      console.warn(`⚠ Fallback extraction failed: ${e.message}`);
-    }
-  }
-
-  throw new Error(
-    'No model data found on the page. The page structure may have changed.\n' +
-    '  Searched for: ModelsMasonry component, ProfileCard components, or any astro-island with "models" prop.\n' +
-    '  Check https://routing.run/models manually and update the scraping logic.'
-  );
-}
-
-// ─── Context parsing ─────────────────────────────────────────────────────────
-
-/**
- * Parse context strings like "131K", "1M", "262144", "200K", "164K", "256K", "100K".
- * Returns null for "N/A" or other unparseable strings.
- * Uses *1024 for K/M suffixes to match observed API values (e.g. "131K" → 131072).
- */
-function parseContext(str) {
-  if (!str) return null;
-  const s = String(str).trim();
-  if (!s || s === 'N/A' || s === '-') return null;
-
-  if (s.endsWith('M')) {
-    return Math.round(parseFloat(s) * 1_000_000);
-  }
-  if (s.endsWith('K')) {
-    return Math.round(parseFloat(s) * 1024);
-  }
-  const n = parseInt(s, 10);
-  return isNaN(n) ? null : n;
-}
-
-// ─── Model type detection ────────────────────────────────────────────────────
-
-/**
- * Determine if a model is a chat/completion LLM (vs embedding, reranker,
- * image gen, TTS, STT, etc.). Non-LLM models get filtered out of models.json
- * since they can't be used with /v1/chat/completions.
- */
-function isChatModel(card) {
-  const id = (card.modelId || '').toLowerCase();
-  const provider = (card.provider || '').toLowerCase();
-
-  // Known non-chat providers
-  if (['elevenlabs', 'bfl', 'stability', 'tencent'].includes(provider)) return false;
-
-  // Known non-chat model name patterns
-  const nonChatPatterns = [
-    /embed/i,       // embeddings: cohere-embed-*, qwen3-embedding-*
-    /rerank/i,      // rerankers: cohere-rerank-*
-    /-image-/i,     // image gen: qwen-image-*, (but not image in model name like "GLM 5 Image")
-    /tts/i,
-    /speak/i,
-    /whisper/i,     // STT
-    /scribe/i,      // STT
-    /flux/i,        // image gen
-    /diffusion/i,   // image gen
-    /hunyuan/i,     // image gen
-    /eleven-/i,     // TTS
-    /qwen-image/i,  // image gen
-  ];
-
-  for (const pattern of nonChatPatterns) {
-    if (pattern.test(id)) return false;
-  }
-
-  // If context is "N/A" and no pricing, likely not a chat model
-  const ctx = (card.context || '').trim();
-  if ((ctx === 'N/A' || ctx === '') && !card.inputPrice && !card.outputPrice) {
-    return false;
-  }
-
-  return true;
-}
-
-// ─── Transform scraped model → models.json entry ────────────────────────────
-
-function transformScrapedModel(card, existingModelsMap) {
-  const id = card.modelId;
-
-  if (!id || !id.startsWith('route/')) {
-    console.warn(`⚠ Skipping model with invalid ID: ${id}`);
+async function fetchPricing(apiKey) {
+  if (!apiKey) {
+    console.log('No API key set, skipping pricing fetch (ROUTING_RUN_API_KEY)');
     return null;
   }
+  for (const url of PRICING_API_URLS) {
+    try {
+      console.log(`Fetching pricing from ${url}...`);
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
+      if (!response.ok) {
+        console.warn(`⚠ Pricing API at ${url} returned HTTP ${response.status}`);
+        continue;
+      }
+      const data = await response.json();
+      const models = data.models || [];
+      console.log(`✓ Fetched ${models.length} pricing entries from ${url}`);
+      return models;
+    } catch (error) {
+      console.warn(`⚠ Pricing fetch from ${url} failed: ${error.message}`);
+    }
+  }
+  console.warn('⚠ Pricing fetch failed from all endpoints, preserving existing pricing');
+  return null;
+}
 
-  // Preserve existing curated data (reasoning, thinkingFormat, compat, etc.)
-  if (existingModelsMap[id]) {
-    const existing = { ...existingModelsMap[id] };
+// ─── Transform ───────────────────────────────────────────────────────────────
 
-    // Update context from scrape
-    const ctx = parseContext(card.context);
-    if (ctx && ctx !== existing.contextWindow) {
-      existing.contextWindow = ctx;
-    }
+function transformModel(apiModel, pricingMap, existingModelsMap) {
+  const modelId = apiModel.id;
 
-    // Update maxTokens from outputContext if available
-    const maxOut = parseContext(card.outputContext);
-    if (maxOut && maxOut !== existing.maxTokens) {
-      existing.maxTokens = maxOut;
-    } else if (!existing.maxTokens) {
-      existing.maxTokens = ctx || existing.contextWindow;
-    }
+  // Filter non-chat models (embeddings, rerankers, TTS, STT, image gen)
+  if (apiModel.capability !== 'chat') return null;
 
-    // Update pricing from scrape
-    if (card.inputPrice) {
-      existing.cost.input = parseFloat(card.inputPrice) || 0;
-    }
-    if (card.outputPrice) {
-      existing.cost.output = parseFloat(card.outputPrice) || 0;
-    }
-    if (card.cachePrice) {
-      existing.cost.cacheRead = parseFloat(card.cachePrice) || 0;
-    }
+  const modalities = apiModel.modalities || {};
+  const limit = apiModel.limit || {};
+  const input = (modalities.input || ['text']).filter(m => m === 'text' || m === 'image');
+  const tier = apiModel.tier || 'free';
+  const contextWindow = limit.context || 131072;
+  const maxTokens = limit.output || contextWindow;
+
+  // Get pricing from pricing API (lowest tier entry per model)
+  const pricing = pricingMap.get(modelId) || {};
+  const displayName = pricing.display_name || null;
+  const inputCost = pricing.input_per_million || 0;
+  const outputCost = pricing.output_per_million || 0;
+
+  // Preserve existing curated data (reasoning, compat, display names, cache pricing)
+  if (existingModelsMap[modelId]) {
+    const existing = { ...existingModelsMap[modelId] };
+
+    // Update metadata from API
+    existing.contextWindow = contextWindow;
+    if (maxTokens) existing.maxTokens = maxTokens;
+    existing.input = input;
+
+    // Update pricing from API (only if > 0, preserving existing otherwise)
+    if (inputCost > 0) existing.cost.input = round2(inputCost);
+    if (outputCost > 0) existing.cost.output = round2(outputCost);
+
+    // Update display name from pricing API if available
+    if (displayName) existing.name = displayName;
+
+    // _meta for README generation (stripped before saving to models.json)
+    existing._meta = { tier };
 
     return existing;
   }
 
-  // New model — build from scraped data + sensible defaults
-  const contextWindow = parseContext(card.context) || 131072;
-  const maxTokens = parseContext(card.outputContext) || contextWindow;
-
-  const model = {
-    id,
-    name: card.name || id,
-    reasoning: false,
-    input: ['text'],
+  // New model — build from API data + sensible defaults
+  // Curate models.json manually after discovery for reasoning, thinkingFormat, etc.
+  return {
+    id: modelId,
+    name: displayName || apiModel.name || modelId,
+    reasoning: false, // API doesn't report this, patch.json corrects
+    input,
     cost: {
-      input: parseFloat(card.inputPrice) || 0,
-      output: parseFloat(card.outputPrice) || 0,
-      cacheRead: parseFloat(card.cachePrice) || 0,
+      input: round2(inputCost),
+      output: round2(outputCost),
+      cacheRead: 0,
       cacheWrite: 0,
     },
     contextWindow,
     maxTokens,
-    compat: {
-      maxTokensField: 'max_tokens',
-      supportsDeveloperRole: false,
-      supportsStore: false,
-    },
+    _meta: { tier },
   };
-
-  return model;
 }
 
 // ─── Patch & Custom Models ──────────────────────────────────────────────────
@@ -454,22 +248,28 @@ function formatCost(cost) {
   return `$${cost.toFixed(3)}`;
 }
 
+function capitalizeTier(tier) {
+  if (!tier) return 'Free';
+  return tier.charAt(0).toUpperCase() + tier.slice(1);
+}
+
 function generateReadmeTable(models) {
   const lines = [
-    '| Model | Context | Max Output | Reasoning | Input $/M | Output $/M | Cache $/M |',
-    '|-------|---------|------------|-----------|-----------|------------|-----------|',
+    '| Model | Context | Max Output | Tier | Reasoning | Input $/M | Output $/M | Cache $/M |',
+    '|-------|---------|------------|------|-----------|-----------|------------|-----------|',
   ];
 
   for (const model of models) {
     const context = formatContext(model.contextWindow);
     const maxOut = formatContext(model.maxTokens);
+    const tier = capitalizeTier(model._meta?.tier);
     const reasoning = model.reasoning ? '✅' : '❌';
     const inputCost = formatCost(model.cost.input);
     const outputCost = formatCost(model.cost.output);
     const cacheCost = formatCost(model.cost.cacheRead);
 
     lines.push(
-      `| ${model.name} | ${context} | ${maxOut} | ${reasoning} | ${inputCost} | ${outputCost} | ${cacheCost} |`
+      `| ${model.name} | ${context} | ${maxOut} | ${tier} | ${reasoning} | ${inputCost} | ${outputCost} | ${cacheCost} |`
     );
   }
 
@@ -480,7 +280,7 @@ function updateReadme(models) {
   let readme = fs.readFileSync(README_PATH, 'utf8');
   const newTable = generateReadmeTable(models);
 
-  // Also update model count lines
+  // Update model count lines
   readme = readme.replace(
     /\*\*\d+ models\*\*/g,
     `**${models.length} models**`
@@ -505,47 +305,55 @@ function updateReadme(models) {
   }
 }
 
+// ─── Clean ───────────────────────────────────────────────────────────────────
+
+function cleanModelForJson(model) {
+  const { _meta, ...cleanModel } = model;
+  return cleanModel;
+}
+
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const cards = await scrapeModels();
+  const apiKey = process.env.ROUTING_RUN_API_KEY;
 
-  // Filter out non-chat models (embeddings, rerankers, image gen, TTS, STT)
-  const chatCards = cards.filter(isChatModel);
-  const filteredCount = cards.length - chatCards.length;
-  if (filteredCount > 0) {
-    console.log(`✓ Filtered out ${filteredCount} non-chat models (embeddings, rerankers, image gen, TTS, STT)`);
+  // Fetch from API
+  const apiModels = await fetchModels();
+  const pricingEntries = await fetchPricing(apiKey);
+
+  // Build pricing map (first occurrence per model ID = lowest tier)
+  const pricingMap = new Map();
+  if (pricingEntries) {
+    for (const entry of pricingEntries) {
+      if (!pricingMap.has(entry.model)) {
+        pricingMap.set(entry.model, entry);
+      }
+    }
   }
 
-  // Validate we got a reasonable number of models
-  if (chatCards.length < MIN_MODELS_EXPECTED) {
-    throw new Error(
-      `Only ${chatCards.length} chat models found (expected at least ${MIN_MODELS_EXPECTED}). ` +
-      `The page structure may have changed or there may be a scraping issue.`
-    );
+  // Load existing models.json — source of truth for curated specs
+  let existingModels = [];
+  try {
+    existingModels = JSON.parse(fs.readFileSync(MODELS_JSON_PATH, 'utf8'));
+  } catch {
+    // File might not exist or be invalid
   }
-
-  // Load existing models.json for metadata preservation
-  const existingModels = loadJson(MODELS_JSON_PATH);
   const existingModelsMap = {};
-  for (const m of Array.isArray(existingModels) ? existingModels : []) {
+  for (const m of existingModels) {
     existingModelsMap[m.id] = m;
   }
 
-  // Transform scraped cards
-  let models = chatCards
-    .map(c => transformScrapedModel(c, existingModelsMap))
+  // Transform models from API, preserving existing curated data
+  let models = apiModels
+    .map(m => transformModel(m, pricingMap, existingModelsMap))
     .filter(m => m !== null);
 
-  // Keep models from models.json that are NOT on the page at all
-  // (e.g. removed from catalog but still usable, or custom models)
-  // Use ALL page IDs (including non-chat) so we don't re-add models
-  // that the page still has but were correctly filtered as non-chat.
-  const allPageIds = new Set(cards.map(c => c.modelId));
-  for (const existing of Object.values(existingModelsMap)) {
-    if (!allPageIds.has(existing.id)) {
-      models.push(existing);
-    }
+  // Validate
+  if (models.length < MIN_MODELS_EXPECTED) {
+    throw new Error(
+      `Only ${models.length} chat models found (expected at least ${MIN_MODELS_EXPECTED}). ` +
+      `The API may be having issues.`
+    );
   }
 
   // Sort: reasoning first, then alphabetically
@@ -554,8 +362,9 @@ async function main() {
     return a.name.localeCompare(b.name);
   });
 
-  // Save models.json (pure API output, no patch/custom baked in)
-  saveJson(MODELS_JSON_PATH, models);
+  // Save models.json — pure API data, no patches baked in
+  const cleanModels = models.map(cleanModelForJson);
+  saveJson(MODELS_JSON_PATH, cleanModels);
 
   // Build full model list for README: base → patch → custom
   const patchData = loadJson(PATCH_JSON_PATH);
@@ -576,20 +385,49 @@ async function main() {
   const removed = [...oldIds].filter(id => !newIds.has(id));
 
   console.log('\n--- Summary ---');
-  console.log(`Total models on page: ${cards.length} (${chatCards.length} chat, ${filteredCount} non-chat)`);
-  console.log(`Total models in models.json: ${models.length}`);
-  console.log(`Reasoning models: ${models.filter(m => m.reasoning).length}`);
-  console.log(`Non-reasoning models: ${models.filter(m => !m.reasoning).length}`);
+  console.log(`Total API models: ${apiModels.length}`);
+  console.log(`Chat models: ${models.length}`);
+  console.log(`Reasoning models (patched): ${readmeModels.filter(m => m.reasoning).length}`);
+  console.log(`Vision models: ${readmeModels.filter(m => m.input.includes('image')).length}`);
   if (added.length > 0) console.log(`New models: ${added.join(', ')}`);
-  if (removed.length > 0) console.log(`Removed from page (preserved in models.json): ${removed.join(', ')}`);
+  if (removed.length > 0) console.log(`Removed models: ${removed.join(', ')}`);
 
-  // List models with pricing
-  console.log('\nModels (with pricing):');
+  // List models
+  console.log('\nModels:');
   for (const m of models) {
     const r = m.reasoning ? '🧠' : '  ';
+    const v = m.input.includes('image') ? '👁' : '  ';
     const in$ = m.cost.input > 0 ? `$${m.cost.input.toFixed(3)}` : '—';
     const out$ = m.cost.output > 0 ? `$${m.cost.output.toFixed(3)}` : '—';
-    console.log(`  ${r} ${m.id.padEnd(38)} in:${in$.padStart(8)}  out:${out$.padStart(8)}  ctx:${formatContext(m.contextWindow).padStart(5)}`);
+    const tier = (m._meta?.tier || '?').padEnd(8);
+    console.log(`  ${r}${v} ${m.id.padEnd(40)} tier:${tier} in:${in$.padStart(8)}  out:${out$.padStart(8)}  ctx:${formatContext(m.contextWindow).padStart(6)}`);
+  }
+
+  // Pricing changes
+  for (const model of models) {
+    const oldModel = existingModels.find(m => m.id === model.id);
+    if (oldModel) {
+      const oldInput = oldModel.cost?.input || 0;
+      const oldOutput = oldModel.cost?.output || 0;
+      if (oldInput !== model.cost.input || oldOutput !== model.cost.output) {
+        console.log(`\nPricing change for ${model.id}:`);
+        if (oldInput !== model.cost.input) {
+          console.log(`  Input: $${oldInput}/M → $${model.cost.input}/M`);
+        }
+        if (oldOutput !== model.cost.output) {
+          console.log(`  Output: $${oldOutput}/M → $${model.cost.output}/M`);
+        }
+      }
+    }
+  }
+
+  // Note models needing patch.json curation
+  const uncurated = models.filter(m => !m.reasoning && !existingModelsMap[m.id]);
+  if (uncurated.length > 0) {
+    console.log(`\nNew models needing patch.json curation (reasoning, compat, pricing):`);
+    for (const m of uncurated) {
+      console.log(`  ${m.id}`);
+    }
   }
 }
 

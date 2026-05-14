@@ -1,14 +1,17 @@
 /**
  * Routing.Run Provider Extension
  *
- * Registers Routing.Run (api.routing.run) as a custom provider.
- * Base URL: https://api.routing.run/v1 (OpenAI-compatible)
+ * Registers Routing.Run as a custom provider.
+ * Primary: https://api.routing.sh/v1 (faster)
+ * Fallback: https://api.routing.run/v1
+ * Both are OpenAI-compatible.
  *
  * Routing.Run is an LLM router that auto-selects the optimal provider
  * for each request. All models use the `route/` prefix.
  *
  * Features:
  *   - OpenAI-compatible API
+ *   - Dual endpoints (api.routing.sh primary, api.routing.run fallback)
  *   - Multi-provider routing with fallback
  *   - Reasoning/thinking support (model-dependent)
  *   - latency_ms and provider metadata on responses
@@ -151,8 +154,9 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
 // ─── Stale-While-Revalidate Model Sync ────────────────────────────────────────
 
 const PROVIDER_ID = "routing-run";
-const BASE_URL = "https://api.routing.run/v1";
-const MODELS_URL = `${BASE_URL}/models`;
+const BASE_URL = "https://api.routing.sh/v1";
+const FALLBACK_BASE_URL = "https://api.routing.run/v1";
+const MODELS_PATH = "/models";
 const CACHE_DIR = path.join(os.homedir(), ".pi", "agent", "cache");
 const CACHE_PATH = path.join(CACHE_DIR, `${PROVIDER_ID}-models.json`);
 const LIVE_FETCH_TIMEOUT_MS = 8000;
@@ -174,19 +178,26 @@ function transformApiModel(apiModel: any): JsonModel | null {
 }
 
 async function fetchLiveModels(apiKey: string, signal?: AbortSignal): Promise<JsonModel[] | null> {
-  try {
-    const response = await fetch(MODELS_URL, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-      signal: signal ? AbortSignal.any([AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS), signal]) : AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS),
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
-    const apiModels = Array.isArray(data) ? data : (data.data || []);
-    if (!Array.isArray(apiModels) || apiModels.length === 0) return null;
-    return apiModels.map(transformApiModel).filter((m): m is JsonModel => m !== null);
-  } catch {
-    return null;
+  const urls = [`${BASE_URL}${MODELS_PATH}`, `${FALLBACK_BASE_URL}${MODELS_PATH}`];
+  const timeoutSignal = signal
+    ? AbortSignal.any([AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS), signal])
+    : AbortSignal.timeout(LIVE_FETCH_TIMEOUT_MS);
+  for (const url of urls) {
+    try {
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+        signal: timeoutSignal,
+      });
+      if (!response.ok) continue;
+      const data = await response.json();
+      const apiModels = Array.isArray(data) ? data : (data.data || []);
+      if (!Array.isArray(apiModels) || apiModels.length === 0) continue;
+      return apiModels.map(transformApiModel).filter((m): m is JsonModel => m !== null);
+    } catch {
+      continue;
+    }
   }
+  return null;
 }
 
 function loadCachedModels(): JsonModel[] | null {

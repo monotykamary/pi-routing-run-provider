@@ -1,40 +1,19 @@
 [
   {
-    "id": "route/deepseek-r1",
-    "name": "DeepSeek R1",
-    "reasoning": true,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0.495,
-      "output": 2.365,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 166912,
-    "maxTokens": 166912,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false,
-      "thinkingFormat": "openai"
-    }
-  },
-  {
     "id": "route/deepseek-v3.2",
     "name": "DeepSeek V3.2",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
-      "input": 0.493,
-      "output": 0.739,
+      "input": 0.49,
+      "output": 0.74,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 167936,
+    "contextWindow": 163840,
     "maxTokens": 163840,
     "compat": {
       "thinkingFormat": "openai",
@@ -48,7 +27,8 @@
     "name": "DeepSeek V3.2 Speciale",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.55,
@@ -56,8 +36,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 167936,
-    "maxTokens": 167936,
+    "contextWindow": 163840,
+    "maxTokens": 163840,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -67,19 +47,19 @@
   },
   {
     "id": "route/deepseek-v4-pro",
-    "name": "DeepSeek V4 Pro",
+    "name": "Deepseek V4 Pro",
     "reasoning": true,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 1.15,
-      "output": 3,
+      "input": 0.49,
+      "output": 0.74,
       "cacheRead": 0.23,
       "cacheWrite": 0
     },
     "contextWindow": 1000000,
-    "maxTokens": 134144,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -89,10 +69,11 @@
   },
   {
     "id": "route/gemma-4-31b-it",
-    "name": "Gemma 4 31B IT",
+    "name": "Gemma-4 31B IT",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.1,
@@ -100,8 +81,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
-    "maxTokens": 262144,
+    "contextWindow": 131072,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -111,7 +92,7 @@
   },
   {
     "id": "route/glm-4.7",
-    "name": "GLM 4.7",
+    "name": "Glm 4.7",
     "reasoning": true,
     "input": [
       "text"
@@ -122,8 +103,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
+    "contextWindow": 128000,
+    "maxTokens": 128000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -133,7 +114,7 @@
   },
   {
     "id": "route/glm-4.7-flash",
-    "name": "GLM 4.7 Flash",
+    "name": "Glm 4.7 Flash",
     "reasoning": true,
     "input": [
       "text"
@@ -144,8 +125,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
+    "contextWindow": 128000,
+    "maxTokens": 128000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -154,42 +135,20 @@
     }
   },
   {
-    "id": "route/glm-5",
-    "name": "GLM 5",
-    "reasoning": true,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0.792,
-      "output": 2.53,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 204800,
-    "maxTokens": 202752,
-    "compat": {
-      "thinkingFormat": "qwen-chat-template",
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
     "id": "route/glm-5-highspeed",
-    "name": "GLM 5 Highspeed",
+    "name": "Glm 5 Highspeed",
     "reasoning": true,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 1.109,
-      "output": 3.542,
+      "input": 1.11,
+      "output": 3.54,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
+    "contextWindow": 202752,
+    "maxTokens": 202752,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -199,7 +158,7 @@
   },
   {
     "id": "route/glm-5.1",
-    "name": "GLM 5.1",
+    "name": "Glm 5.1",
     "reasoning": true,
     "input": [
       "text"
@@ -210,8 +169,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
+    "contextWindow": 202752,
+    "maxTokens": 202752,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -221,7 +180,7 @@
   },
   {
     "id": "route/glm-5.1-precision",
-    "name": "GLM 5.1 Precision",
+    "name": "Glm 5.1 Precision",
     "reasoning": true,
     "input": [
       "text"
@@ -232,8 +191,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
+    "contextWindow": 202752,
+    "maxTokens": 202752,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -242,19 +201,42 @@
     }
   },
   {
-    "id": "route/kimi-k2.5",
-    "name": "Kimi K2.5",
+    "id": "route/glm-5",
+    "name": "GLM-5",
     "reasoning": true,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 0.462,
+      "input": 0.79,
+      "output": 2.53,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 202752,
+    "maxTokens": 202752,
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  {
+    "id": "route/kimi-k2.5",
+    "name": "Kimi K2.5",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.46,
       "output": 2.42,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
+    "contextWindow": 131072,
     "maxTokens": 32768,
     "compat": {
       "thinkingFormat": "zai",
@@ -268,16 +250,17 @@
     "name": "Kimi K2.5 Highspeed",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
-      "input": 0.647,
-      "output": 3.388,
+      "input": 0.65,
+      "output": 3.39,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
-    "maxTokens": 134144,
+    "contextWindow": 131072,
+    "maxTokens": 32768,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -290,11 +273,12 @@
     "name": "Kimi K2.6 Precision",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
-      "input": 0.462,
-      "output": 2.42,
+      "input": 0.65,
+      "output": 3.39,
       "cacheRead": 0,
       "cacheWrite": 0
     },
@@ -308,33 +292,12 @@
     }
   },
   {
-    "id": "route/mimo-v2.5",
-    "name": "MiMo-V2.5",
-    "reasoning": true,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0.45,
-      "output": 1.35,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 262144,
-    "maxTokens": 262144,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false,
-      "thinkingFormat": "qwen"
-    }
-  },
-  {
     "id": "route/mimo-v2.5-pro",
-    "name": "MiMo-V2.5-Pro",
+    "name": "Mimo V2.5 Pro",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.45,
@@ -344,6 +307,29 @@
     },
     "contextWindow": 1000000,
     "maxTokens": 262144,
+    "compat": {
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "thinkingFormat": "qwen"
+    }
+  },
+  {
+    "id": "route/mimo-v2.5",
+    "name": "MiMo-V2.5",
+    "reasoning": true,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.45,
+      "output": 1.35,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 256000,
+    "maxTokens": 256000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -359,13 +345,13 @@
       "text"
     ],
     "cost": {
-      "input": 0.193,
-      "output": 1.238,
+      "input": 0.19,
+      "output": 1.24,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 102400,
-    "maxTokens": 102400,
+    "contextWindow": 100000,
+    "maxTokens": 100000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -381,13 +367,13 @@
       "text"
     ],
     "cost": {
-      "input": 0.193,
-      "output": 1.238,
+      "input": 0.19,
+      "output": 1.24,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 102400,
-    "maxTokens": 102400,
+    "contextWindow": 100000,
+    "maxTokens": 100000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -408,8 +394,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 102400,
-    "maxTokens": 102400,
+    "contextWindow": 100000,
+    "maxTokens": 100000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -430,8 +416,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 102400,
-    "maxTokens": 102400,
+    "contextWindow": 100000,
+    "maxTokens": 100000,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -441,10 +427,11 @@
   },
   {
     "id": "route/qwen3.5-397b-a17b",
-    "name": "Qwen 3.5 397B A17B",
+    "name": "Qwen3.5 397B A17B",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 1.1,
@@ -452,7 +439,7 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
+    "contextWindow": 262144,
     "maxTokens": 262144,
     "compat": {
       "thinkingFormat": "qwen",
@@ -466,7 +453,8 @@
     "name": "Qwen3.5 Plus",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.55,
@@ -474,8 +462,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
-    "maxTokens": 134144,
+    "contextWindow": 131072,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -488,7 +476,8 @@
     "name": "Qwen3.6 Plus",
     "reasoning": true,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.6,
@@ -496,8 +485,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
-    "maxTokens": 134144,
+    "contextWindow": 131072,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -507,19 +496,19 @@
   },
   {
     "id": "route/deepseek-v4-flash",
-    "name": "DeepSeek V4 Flash",
+    "name": "Deepseek V4 Flash",
     "reasoning": false,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 0.12,
-      "output": 0.21,
+      "input": 0.49,
+      "output": 0.74,
       "cacheRead": 0.02,
       "cacheWrite": 0
     },
     "contextWindow": 1000000,
-    "maxTokens": 134144,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -528,19 +517,19 @@
   },
   {
     "id": "route/deepseek-v4-flash-full",
-    "name": "DeepSeek V4 Flash Full",
+    "name": "Deepseek V4 Flash Full",
     "reasoning": false,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 0.12,
-      "output": 0.21,
+      "input": 0.49,
+      "output": 0.74,
       "cacheRead": 0.02,
       "cacheWrite": 0
     },
     "contextWindow": 1000000,
-    "maxTokens": 134144,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -549,19 +538,19 @@
   },
   {
     "id": "route/deepseek-v4-pro-precision",
-    "name": "DeepSeek V4 Pro Precision",
+    "name": "Deepseek V4 Pro Precision",
     "reasoning": false,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 1.25,
-      "output": 3,
+      "input": 0.74,
+      "output": 1.11,
       "cacheRead": 0.25,
       "cacheWrite": 0
     },
     "contextWindow": 1000000,
-    "maxTokens": 134144,
+    "maxTokens": 131072,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -569,20 +558,36 @@
     }
   },
   {
-    "id": "route/glm-5.1-full",
-    "name": "glm-5.1-full",
+    "id": "route/glm-5.1-fp16",
+    "name": "Glm 5.1 Fp16",
     "reasoning": false,
     "input": [
       "text"
     ],
     "cost": {
-      "input": 1,
-      "output": 3,
+      "input": 1.2,
+      "output": 3.5,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
+    "contextWindow": 202752,
+    "maxTokens": 202752
+  },
+  {
+    "id": "route/glm-5.1-full",
+    "name": "Glm 5.1 Full",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 1.2,
+      "output": 3.5,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 202752,
+    "maxTokens": 202752,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -594,10 +599,11 @@
     "name": "Kimi K2.6",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
-      "input": 0.462,
+      "input": 0.46,
       "output": 2.42,
       "cacheRead": 0,
       "cacheWrite": 0
@@ -615,35 +621,15 @@
     "name": "Kimi K2.6 Full",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
-      "input": 0.462,
+      "input": 0.46,
       "output": 2.42,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 204800,
-    "maxTokens": 204800,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/mimo-v2.5-preview",
-    "name": "MiMo-V2.5",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0.45,
-      "output": 1.35,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
     "contextWindow": 262144,
     "maxTokens": 262144,
     "compat": {
@@ -653,11 +639,12 @@
     }
   },
   {
-    "id": "route/mimo-v2.5-pro-preview",
-    "name": "MiMo-V2.5-Pro",
+    "id": "route/mimo-v2.5-pro-precision",
+    "name": "Mimo V2.5 Pro Precision",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.45,
@@ -665,13 +652,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 262144,
-    "maxTokens": 262144,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
+    "contextWindow": 1000000,
+    "maxTokens": 131072
   },
   {
     "id": "route/mistral-large-3",
@@ -686,8 +668,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
+    "contextWindow": 128000,
+    "maxTokens": 32768,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -699,7 +681,8 @@
     "name": "Mistral Medium 2505",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0,
@@ -707,8 +690,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
+    "contextWindow": 128000,
+    "maxTokens": 32768,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -720,7 +703,8 @@
     "name": "Mistral Small 2503",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0,
@@ -728,50 +712,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/poolside-laguna-m.1-preview",
-    "name": "Poolside Laguna M.1 Preview",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
-    "compat": {
-      "maxTokensField": "max_tokens",
-      "supportsDeveloperRole": false,
-      "supportsStore": false
-    }
-  },
-  {
-    "id": "route/poolside-laguna-xs.2-preview",
-    "name": "Poolside Laguna XS.2 Preview",
-    "reasoning": false,
-    "input": [
-      "text"
-    ],
-    "cost": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0
-    },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
+    "contextWindow": 128000,
+    "maxTokens": 32768,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -780,10 +722,11 @@
   },
   {
     "id": "route/qwen3.5-9b",
-    "name": "Qwen 3.5 9B",
+    "name": "Qwen3.5 9B",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.2,
@@ -791,7 +734,7 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
+    "contextWindow": 262144,
     "maxTokens": 262144,
     "compat": {
       "maxTokensField": "max_tokens",
@@ -804,7 +747,8 @@
     "name": "Qwen3.5 9B Chat",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
       "input": 0.2,
@@ -812,8 +756,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
-    "maxTokens": 134144,
+    "contextWindow": 262144,
+    "maxTokens": 262144,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -825,21 +769,38 @@
     "name": "Qwen3.6 27B",
     "reasoning": false,
     "input": [
-      "text"
+      "text",
+      "image"
     ],
     "cost": {
-      "input": 0.2,
-      "output": 0.6,
+      "input": 1.1,
+      "output": 3.3,
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 134144,
-    "maxTokens": 134144,
+    "contextWindow": 262144,
+    "maxTokens": 262144,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
       "supportsStore": false
     }
+  },
+  {
+    "id": "route/step-3.5-flash-full",
+    "name": "route/step-3.5-flash-full",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 262144,
+    "maxTokens": 65536
   },
   {
     "id": "route/step-3.5-flash",
@@ -854,8 +815,8 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
+    "contextWindow": 262144,
+    "maxTokens": 65536,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
@@ -875,12 +836,45 @@
       "cacheRead": 0,
       "cacheWrite": 0
     },
-    "contextWindow": 131072,
-    "maxTokens": 131072,
+    "contextWindow": 262144,
+    "maxTokens": 65536,
     "compat": {
       "maxTokensField": "max_tokens",
       "supportsDeveloperRole": false,
       "supportsStore": false
     }
+  },
+  {
+    "id": "route/mimo-v2-omni",
+    "name": "Xiaomi MiMo V2 Omni",
+    "reasoning": false,
+    "input": [
+      "text",
+      "image"
+    ],
+    "cost": {
+      "input": 0.55,
+      "output": 1.65,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 256000,
+    "maxTokens": 256000
+  },
+  {
+    "id": "route/mimo-v2-pro",
+    "name": "Xiaomi MiMo V2 Pro",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0.45,
+      "output": 1.35,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 256000,
+    "maxTokens": 256000
   }
 ]

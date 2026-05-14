@@ -22,12 +22,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Scrape and update models
+      - name: Fetch and update models
+        env:
+          ROUTING_RUN_API_KEY: ${{ secrets.ROUTING_RUN_API_KEY }}
         run: node scripts/update-models.js
 
       - name: Validate output
         run: |
-          # Verify models.json is valid JSON with expected models
           MODEL_COUNT=$(node -e "
             import fs from 'fs';
             const data = JSON.parse(fs.readFileSync('models.json', 'utf8'));
@@ -36,7 +37,6 @@ jobs:
               console.error('Only ' + data.length + ' models — expected at least 10');
               process.exit(1);
             }
-            // Verify all model IDs have the route/ prefix
             const bad = data.filter(m => !m.id.startsWith('route/'));
             if (bad.length > 0) {
               console.error('Invalid model IDs:', bad.map(m => m.id));
@@ -78,10 +78,10 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'feat: update routing.run models from public catalog'
-          title: 'feat: update routing.run models from public catalog'
+          commit-message: 'feat: update routing.run models from API'
+          title: 'feat: update routing.run models from API'
           body: |
-            Automated update of Routing.Run models scraped from https://routing.run/models
+            Automated update of Routing.Run models from https://api.routing.sh/v1/models and https://api.routing.sh/v1/pricing
 
             ${{ steps.summary.outputs.summary }}
 
