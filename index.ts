@@ -263,10 +263,17 @@ export default function (pi: ExtensionAPI) {
   const staleBase = loadStaleModels(embeddedModels);
   const staleModels = buildModels(staleBase, customModels, patches);
 
-  pi.registerProvider("routing-run", {
+  const providerConfig = {
     baseUrl: BASE_URL,
     apiKey: "ROUTING_RUN_API_KEY",
     api: "openai-completions",
+    headers: {
+      "User-Agent": "pi-routing-run-provider/1.0.0",
+    },
+  } as const;
+
+  pi.registerProvider("routing-run", {
+    ...providerConfig,
     models: staleModels,
   });
 
@@ -278,9 +285,7 @@ export default function (pi: ExtensionAPI) {
     revalidateModels(cachedApiKey, embeddedModels, signal).then((freshBase) => {
       if (freshBase && !signal.aborted) {
         pi.registerProvider("routing-run", {
-          baseUrl: BASE_URL,
-          apiKey: "ROUTING_RUN_API_KEY",
-          api: "openai-completions",
+          ...providerConfig,
           models: buildModels(freshBase, customModels, patches),
         });
       }
