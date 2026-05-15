@@ -8,7 +8,7 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 - **Dual endpoints** — `api.routing.sh` (primary, faster) with `api.routing.run` fallback
 - **Smart routing** — Auto-selects the optimal upstream provider for each request
 - **API-driven catalog** — Models fetched from `/v1/models` + `/v1/pricing` APIs
-- **Reasoning/thinking** — Extended thinking on 23 of 41 models
+- **Reasoning/thinking** — Extended thinking on 23 of 42 models
 - **Provider failover** — Automatic fallback when upstream providers have issues
 - **Pricing included** — Per-model input/output/cache pricing from the `/v1/pricing` API
 - **Streaming** — Real-time token streaming via SSE
@@ -54,6 +54,7 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 | Qwen3.5 9B Chat | 262K | 262K | Free | ❌ | $0.200 | $0.600 | — |
 | Qwen3.6 27B | 262K | 262K | Free | ❌ | $1.100 | $3.300 | — |
 | route/step-3.5-flash-full | 262K | 66K | Premium | ❌ | — | — | — |
+| route/stepfun-3.5-flash | 262K | 66K | Premium | ❌ | — | — | — |
 | Step 3.5 Flash | 262K | 66K | Premium | ❌ | — | — | — |
 | Step 3.5 Flash 2603 | 262K | 66K | Premium | ❌ | — | — | — |
 | Xiaomi MiMo V2 Omni | 256K | 256K | Premium | ❌ | $0.550 | $1.650 | — |
