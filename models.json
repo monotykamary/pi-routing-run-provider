@@ -803,6 +803,22 @@
     "maxTokens": 65536
   },
   {
+    "id": "route/stepfun-3.5-flash",
+    "name": "route/stepfun-3.5-flash",
+    "reasoning": false,
+    "input": [
+      "text"
+    ],
+    "cost": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0
+    },
+    "contextWindow": 262144,
+    "maxTokens": 65536
+  },
+  {
     "id": "route/step-3.5-flash",
     "name": "Step 3.5 Flash",
     "reasoning": false,
