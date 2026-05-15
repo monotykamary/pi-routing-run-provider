@@ -1,3 +1,271 @@
 {
-  "_comment": "Runtime overrides applied on top of models.json. Add entries here when the scraped data is wrong (e.g. incorrect reasoning flag, missing compat, wrong context window). These are applied at runtime by index.ts and NOT baked into models.json by the update script."
+  "_comment": "Runtime overrides applied on top of models.json. Add entries here when the scraped data is wrong (e.g. incorrect reasoning flag, missing compat, wrong context window). These are applied at runtime by index.ts and NOT baked into models.json by the update script.",
+
+  "route/deepseek-v4-flash": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "openai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsReasoningEffort": true
+    }
+  },
+  "route/deepseek-v4-flash-full": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "openai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsReasoningEffort": true
+    }
+  },
+  "route/deepseek-v4-pro-precision": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "openai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsReasoningEffort": true
+    }
+  },
+  "route/gemma-4-31b-it": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "openai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false,
+      "supportsReasoningEffort": true
+    }
+  },
+  "route/glm-4.7": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-4.7-flash": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-5": {
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-5-highspeed": {
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-5.1": {
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-5.1-fp16": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-5.1-full": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/glm-5.1-precision": {
+    "compat": {
+      "thinkingFormat": "qwen-chat-template",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/kimi-k2.5": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "zai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/kimi-k2.5-highspeed": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "zai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/kimi-k2.6": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "zai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/kimi-k2.6-full": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "zai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/kimi-k2.6-precision": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "zai",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/mimo-v2.5": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/mimo-v2.5-pro": {
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/mimo-v2.5-pro-precision": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/minimax-m2.5": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/minimax-m2.5-highspeed": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/minimax-m2.7": {
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/minimax-m2.7-highspeed": {
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/qwen3.5-397b-a17b": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/qwen3.5-9b": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/qwen3.5-9b-chat": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/qwen3.5-plus": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/qwen3.6-27b": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  },
+  "route/qwen3.6-plus": {
+    "reasoning": true,
+    "compat": {
+      "thinkingFormat": "qwen",
+      "maxTokensField": "max_tokens",
+      "supportsDeveloperRole": false,
+      "supportsStore": false
+    }
+  }
 }

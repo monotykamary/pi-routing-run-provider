@@ -19,40 +19,40 @@ A [pi](https://github.com/badlogic/pi-mono) extension that adds [Routing.Run](ht
 |-------|---------|------------|------|-----------|-----------|------------|-----------|
 | DeepSeek V3.2 | 164K | 164K | Free | ✅ | $0.490 | $0.740 | — |
 | DeepSeek V3.2 Speciale | 164K | 164K | Max | ✅ | $0.550 | $0.820 | — |
+| Deepseek V4 Flash | 1.0M | 131K | Lite | ✅ | $0.490 | $0.740 | $0.020 |
+| Deepseek V4 Flash Full | 1.0M | 131K | Premium | ✅ | $0.490 | $0.740 | $0.020 |
 | Deepseek V4 Pro | 1.0M | 131K | Lite | ✅ | $0.490 | $0.740 | $0.230 |
+| Deepseek V4 Pro Precision | 1.0M | 131K | Premium | ✅ | $0.740 | $1.110 | $0.250 |
 | Gemma-4 31B IT | 131K | 131K | Free | ✅ | $0.100 | $0.300 | — |
 | Glm 4.7 | 128K | 128K | Lite | ✅ | $1.320 | $4.400 | — |
 | Glm 4.7 Flash | 128K | 128K | Lite | ✅ | $1.320 | $4.400 | — |
 | Glm 5 Highspeed | 203K | 203K | Max | ✅ | $1.110 | $3.540 | — |
 | Glm 5.1 | 203K | 203K | Lite | ✅ | $1.000 | $3.000 | — |
+| Glm 5.1 Fp16 | 203K | 203K | Premium | ✅ | $1.200 | $3.500 | — |
+| Glm 5.1 Full | 203K | 203K | Premium | ✅ | $1.200 | $3.500 | — |
 | Glm 5.1 Precision | 203K | 203K | Lite | ✅ | $1.200 | $3.500 | — |
 | GLM-5 | 203K | 203K | Free | ✅ | $0.790 | $2.530 | — |
 | Kimi K2.5 | 131K | 33K | Free | ✅ | $0.460 | $2.420 | — |
 | Kimi K2.5 Highspeed | 131K | 33K | Lite | ✅ | $0.650 | $3.390 | — |
+| Kimi K2.6 | 262K | 262K | Lite | ✅ | $0.460 | $2.420 | — |
+| Kimi K2.6 Full | 262K | 262K | Premium | ✅ | $0.460 | $2.420 | — |
 | Kimi K2.6 Precision | 262K | 262K | Premium | ✅ | $0.650 | $3.390 | — |
 | Mimo V2.5 Pro | 1.0M | 262K | Premium | ✅ | $0.450 | $1.350 | — |
+| Mimo V2.5 Pro Precision | 1.0M | 131K | Premium | ✅ | $0.450 | $1.350 | — |
 | MiMo-V2.5 | 256K | 256K | Premium | ✅ | $0.450 | $1.350 | — |
 | MiniMax M2.5 | 100K | 100K | Lite | ✅ | $0.190 | $1.240 | — |
 | MiniMax M2.5 Highspeed | 100K | 100K | Premium | ✅ | $0.190 | $1.240 | — |
 | MiniMax M2.7 | 100K | 100K | Premium | ✅ | $0.330 | $1.320 | — |
 | MiniMax M2.7 Highspeed | 100K | 100K | Lite | ✅ | $0.330 | $1.320 | — |
 | Qwen3.5 397B A17B | 262K | 262K | Free | ✅ | $1.100 | $3.300 | — |
+| Qwen3.5 9B | 262K | 262K | Free | ✅ | $0.200 | $0.600 | — |
+| Qwen3.5 9B Chat | 262K | 262K | Free | ✅ | $0.200 | $0.600 | — |
 | Qwen3.5 Plus | 131K | 131K | Premium | ✅ | $0.550 | $1.650 | — |
+| Qwen3.6 27B | 262K | 262K | Free | ✅ | $1.100 | $3.300 | — |
 | Qwen3.6 Plus | 131K | 131K | Premium | ✅ | $0.600 | $1.800 | — |
-| Deepseek V4 Flash | 1.0M | 131K | Lite | ❌ | $0.490 | $0.740 | $0.020 |
-| Deepseek V4 Flash Full | 1.0M | 131K | Premium | ❌ | $0.490 | $0.740 | $0.020 |
-| Deepseek V4 Pro Precision | 1.0M | 131K | Premium | ❌ | $0.740 | $1.110 | $0.250 |
-| Glm 5.1 Fp16 | 203K | 203K | Premium | ❌ | $1.200 | $3.500 | — |
-| Glm 5.1 Full | 203K | 203K | Premium | ❌ | $1.200 | $3.500 | — |
-| Kimi K2.6 | 262K | 262K | Lite | ❌ | $0.460 | $2.420 | — |
-| Kimi K2.6 Full | 262K | 262K | Premium | ❌ | $0.460 | $2.420 | — |
-| Mimo V2.5 Pro Precision | 1.0M | 131K | Premium | ❌ | $0.450 | $1.350 | — |
 | Mistral Large 3 | 128K | 33K | Premium | ❌ | — | — | — |
 | Mistral Medium 2505 | 128K | 33K | Premium | ❌ | — | — | — |
 | Mistral Small 2503 | 128K | 33K | Premium | ❌ | — | — | — |
-| Qwen3.5 9B | 262K | 262K | Free | ❌ | $0.200 | $0.600 | — |
-| Qwen3.5 9B Chat | 262K | 262K | Free | ❌ | $0.200 | $0.600 | — |
-| Qwen3.6 27B | 262K | 262K | Free | ❌ | $1.100 | $3.300 | — |
 | route/step-3.5-flash-full | 262K | 66K | Premium | ❌ | — | — | — |
 | route/stepfun-3.5-flash | 262K | 66K | Premium | ❌ | — | — | — |
 | Step 3.5 Flash | 262K | 66K | Premium | ❌ | — | — | — |
