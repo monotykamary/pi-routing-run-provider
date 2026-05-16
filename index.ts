@@ -154,8 +154,8 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
 // ─── Stale-While-Revalidate Model Sync ────────────────────────────────────────
 
 const PROVIDER_ID = "routing-run";
-const BASE_URL = "https://api.routing.sh/v1";
-const FALLBACK_BASE_URL = "https://api.routing.run/v1";
+const BASE_URL = "https://api.routing.run/v1";
+const FALLBACK_BASE_URL = "https://api.routing.sh/v1";
 const MODELS_PATH = "/models";
 const CACHE_DIR = path.join(os.homedir(), ".pi", "agent", "cache");
 const CACHE_PATH = path.join(CACHE_DIR, `${PROVIDER_ID}-models.json`);
