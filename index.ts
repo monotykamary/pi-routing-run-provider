@@ -2,7 +2,7 @@
  * Routing.Run Provider Extension
  *
  * Registers Routing.Run as a custom provider.
- * Primary: https://api.routing.sh/v1 (faster)
+ * Primary: https://ai.routing.sh/v1
  * Fallback: https://api.routing.run/v1
  * Both are OpenAI-compatible.
  *
@@ -11,7 +11,7 @@
  *
  * Features:
  *   - OpenAI-compatible API
- *   - Dual endpoints (api.routing.sh primary, api.routing.run fallback)
+ *   - Dual endpoints (ai.routing.sh primary, api.routing.run fallback)
  *   - Multi-provider routing with fallback
  *   - Reasoning/thinking support (model-dependent)
  *   - latency_ms and provider metadata on responses
@@ -154,8 +154,8 @@ function buildModels(base: JsonModel[], custom: JsonModel[], patch: PatchData): 
 // ─── Stale-While-Revalidate Model Sync ────────────────────────────────────────
 
 const PROVIDER_ID = "routing-run";
-const BASE_URL = "https://api.routing.run/v1";
-const FALLBACK_BASE_URL = "https://api.routing.sh/v1";
+const BASE_URL = "https://ai.routing.sh/v1";
+const FALLBACK_BASE_URL = "https://api.routing.run/v1";
 const MODELS_PATH = "/models";
 const CACHE_DIR = path.join(os.homedir(), ".pi", "agent", "cache");
 const CACHE_PATH = path.join(CACHE_DIR, `${PROVIDER_ID}-models.json`);
